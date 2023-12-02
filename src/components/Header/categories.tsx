@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { motion } from 'framer-motion'
 import styles from "../Header/Categories.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../features/categoriesSlice";
@@ -10,9 +11,27 @@ const Categories = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+
+  const textAnimation = {
+    hidden: custom => ({
+      x: 1000,
+      opacity: 0,
+      transition: {
+        'ease': custom * 8
+      }
+    }),
+    visible: custom =>( {
+      x: 0,
+      opacity: 1,
+      transition: {
+        'ease': custom * 8
+      }
+    })
+  }
   return (
     <>
-      <div className={styles.mainDiv}>
+      <motion.div exit={textAnimation.hidden}  variants={textAnimation} whileInView='visible' initial='hidden' className={styles.mainDiv}>
         <div className={styles.downNavBar}>
           {categories
             .map((item) => {
@@ -35,7 +54,7 @@ const Categories = () => {
             })
             .reverse()}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
